@@ -170,4 +170,6 @@ var canonicalNamespaces = map[string]string{
 	"http://www.w3.org/1999/xlink":                                   "xlink",
 	"http://www.w3.org/XML/1998/namespace":                           "xml",
 	"http://podlove.org/simple-chapters":                             "psc",
+	"https://podcastindex.org/namespace/1.0":                         "podcast",
+	"https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md": "podcast",
 }

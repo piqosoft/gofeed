@@ -33,3 +33,6 @@ cmd/ftest/ftest
 
 # Goland specific files
 .idea
+
+**/.claude/settings.local.json
+/podcast-namespace/

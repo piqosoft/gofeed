@@ -31,6 +31,7 @@ type Feed struct {
 	Categories      []string                 `json:"categories,omitempty"`
 	DublinCoreExt   *ext.DublinCoreExtension `json:"dcExt,omitempty"`
 	ITunesExt       *ext.ITunesFeedExtension `json:"itunesExt,omitempty"`
+	PodcastExt      *ext.PodcastFeedExtension `json:"podcastExt,omitempty"`
 	Extensions      ext.Extensions           `json:"extensions,omitempty"`
 	Custom          map[string]string        `json:"custom,omitempty"`
 	Items           []*Item                  `json:"items"`
@@ -64,6 +65,7 @@ type Item struct {
 	Enclosures      []*Enclosure             `json:"enclosures,omitempty"`
 	DublinCoreExt   *ext.DublinCoreExtension `json:"dcExt,omitempty"`
 	ITunesExt       *ext.ITunesItemExtension `json:"itunesExt,omitempty"`
+	PodcastExt      *ext.PodcastItemExtension `json:"podcastExt,omitempty"`
 	Extensions      ext.Extensions           `json:"extensions,omitempty"`
 	Custom          map[string]string        `json:"custom,omitempty"`
 }

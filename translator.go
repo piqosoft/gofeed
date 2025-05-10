@@ -57,6 +57,7 @@ func (t *DefaultRSSTranslator) Translate(feed interface{}) (*Feed, error) {
 	result.Items = t.translateFeedItems(rss)
 	result.ITunesExt = rss.ITunesExt
 	result.DublinCoreExt = rss.DublinCoreExt
+	result.PodcastExt = rss.PodcastExt
 	result.Extensions = rss.Extensions
 	result.FeedVersion = rss.Version
 	result.FeedType = "rss"
@@ -80,6 +81,7 @@ func (t *DefaultRSSTranslator) translateFeedItem(rssItem *rss.Item) (item *Item)
 	item.Enclosures = t.translateItemEnclosures(rssItem)
 	item.DublinCoreExt = rssItem.DublinCoreExt
 	item.ITunesExt = rssItem.ITunesExt
+	item.PodcastExt = rssItem.PodcastExt
 	item.Extensions = rssItem.Extensions
 	item.Custom = rssItem.Custom
 	return
@@ -558,6 +560,12 @@ func (t *DefaultAtomTranslator) Translate(feed interface{}) (*Feed, error) {
 	result.Categories = t.translateFeedCategories(atom)
 	result.Generator = t.translateFeedGenerator(atom)
 	result.Items = t.translateFeedItems(atom)
+
+	// Parse podcast extension
+	if podcastExt, ok := atom.Extensions["podcast"]; ok {
+		result.PodcastExt = ext.NewPodcastFeedExtension(podcastExt)
+	}
+
 	result.Extensions = atom.Extensions
 	result.FeedVersion = atom.Version
 	result.FeedType = "atom"
@@ -581,6 +589,12 @@ func (t *DefaultAtomTranslator) translateFeedItem(entry *atom.Entry) (item *Item
 	item.Image = t.translateItemImage(entry)
 	item.Categories = t.translateItemCategories(entry)
 	item.Enclosures = t.translateItemEnclosures(entry)
+
+	// Parse podcast extension
+	if podcastExt, ok := entry.Extensions["podcast"]; ok {
+		item.PodcastExt = ext.NewPodcastItemExtension(podcastExt)
+	}
+
 	item.Extensions = entry.Extensions
 	return
 }
@@ -886,6 +900,14 @@ func (t *DefaultJSONTranslator) Translate(feed interface{}) (*Feed, error) {
 	result.UpdatedParsed = t.translateFeedUpdatedParsed(json)
 	result.Published = t.translateFeedPublished(json)
 	result.PublishedParsed = t.translateFeedPublishedParsed(json)
+
+	// Parse podcast extension for JSON feeds (if any)
+	// Note: JSON feeds don't typically include podcast extensions,
+	// but we handle it for completeness
+	if exts, ok := json.Extensions["podcast"]; ok {
+		result.PodcastExt = ext.NewPodcastFeedExtension(exts)
+	}
+
 	result.FeedType = "json"
 	// TODO UserComment is missing in global Feed
 	// TODO NextURL is missing in global Feed
@@ -913,6 +935,14 @@ func (t *DefaultJSONTranslator) translateFeedItem(jsonItem *json.Item) (item *It
 	item.Authors = t.translateItemAuthors(jsonItem)
 	item.Categories = t.translateItemCategories(jsonItem)
 	item.Enclosures = t.translateItemEnclosures(jsonItem)
+
+	// Parse podcast extension for JSON items (if any)
+	// Note: JSON feeds don't typically include podcast extensions,
+	// but we handle it for completeness
+	if extensions, ok := jsonItem.Extensions["podcast"]; ok {
+		item.PodcastExt = ext.NewPodcastItemExtension(extensions)
+	}
+
 	// TODO ExternalURL is missing in global Feed
 	// TODO BannerImage is missing in global Feed
 	return
