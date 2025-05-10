@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	jsoniter "github.com/json-iterator/go"
-	"github.com/mmcdole/gofeed/internal/shared"
+	"github.com/piqosoft/gofeed/internal/shared"
 	xpp "github.com/mmcdole/goxpp"
 )
 

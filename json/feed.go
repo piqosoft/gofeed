@@ -3,7 +3,7 @@ package json
 import (
 	"encoding/json"
 
-	ext "github.com/mmcdole/gofeed/extensions"
+	ext "github.com/piqosoft/gofeed/extensions"
 )
 
 // Feed describes the structure for JSON Feed v1.0
