@@ -187,6 +187,10 @@ func (ap *Parser) parseRoot(p *xpp.XMLPullParser) (*Feed, error) {
 
 	if len(extensions) > 0 {
 		atom.Extensions = extensions
+
+		if podcast, ok := extensions["podcast"]; ok {
+			atom.PodcastExt = ext.NewPodcastFeedExtension(podcast)
+		}
 	}
 
 	if err := p.Expect(xpp.EndTag, "feed"); err != nil {
@@ -340,6 +344,10 @@ func (ap *Parser) parseEntry(p *xpp.XMLPullParser) (*Entry, error) {
 
 	if len(extensions) > 0 {
 		entry.Extensions = extensions
+
+		if podcast, ok := extensions["podcast"]; ok {
+			entry.PodcastExt = ext.NewPodcastItemExtension(podcast)
+		}
 	}
 
 	if err := p.Expect(xpp.EndTag, "entry"); err != nil {

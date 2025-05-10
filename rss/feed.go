@@ -33,6 +33,7 @@ type Feed struct {
 	TextInput           *TextInput               `json:"textInput,omitempty"`
 	DublinCoreExt       *ext.DublinCoreExtension `json:"dcExt,omitempty"`
 	ITunesExt           *ext.ITunesFeedExtension `json:"itunesExt,omitempty"`
+	PodcastExt          *ext.PodcastFeedExtension `json:"podcastExt,omitempty"`
 	Extensions          ext.Extensions           `json:"extensions,omitempty"`
 	Items               []*Item                  `json:"items"`
 	Version             string                   `json:"version"`
@@ -61,6 +62,7 @@ type Item struct {
 	Source        *Source                  `json:"source,omitempty"`
 	DublinCoreExt *ext.DublinCoreExtension `json:"dcExt,omitempty"`
 	ITunesExt     *ext.ITunesItemExtension `json:"itunesExt,omitempty"`
+	PodcastExt    *ext.PodcastItemExtension `json:"podcastExt,omitempty"`
 	Extensions    ext.Extensions           `json:"extensions,omitempty"`
 	Custom        map[string]string        `json:"custom,omitempty"`
 }

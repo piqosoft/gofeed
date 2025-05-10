@@ -307,6 +307,10 @@ func (rp *Parser) parseChannel(p *xpp.XMLPullParser) (rss *Feed, err error) {
 		if dc, ok := rss.Extensions["dc"]; ok {
 			rss.DublinCoreExt = ext.NewDublinCoreExtension(dc)
 		}
+
+		if podcast, ok := rss.Extensions["podcast"]; ok {
+			rss.PodcastExt = ext.NewPodcastFeedExtension(podcast)
+		}
 	}
 
 	return rss, nil
@@ -454,6 +458,10 @@ func (rp *Parser) parseItem(p *xpp.XMLPullParser) (item *Item, err error) {
 
 		if dc, ok := item.Extensions["dc"]; ok {
 			item.DublinCoreExt = ext.NewDublinCoreExtension(dc)
+		}
+
+		if podcast, ok := item.Extensions["podcast"]; ok {
+			item.PodcastExt = ext.NewPodcastItemExtension(podcast)
 		}
 	}
 
