@@ -1,6 +1,7 @@
 package shared
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -28,12 +29,37 @@ func TestDecodeEntities(t *testing.T) {
 		{"&foo", "&foo"},
 		{"&lt", "&lt"},
 		{"&#", "&#"},
+
+		// A bare '&' must not stop later entities from decoding.
+		{"Fish & Chips &amp; more &lt;3", "Fish & Chips & more <3"},
+		{"a & b &amp; c & d &lt;e", "a & b & c & d <e"},
+		{"&unclosed &amp; ok", "&unclosed & ok"},
+		{"& &amp; &", "& & &"},
+
+		// Tab and newline also disqualify an entity candidate.
+		{"a &x\ty; &amp; b", "a &x\ty; & b"},
+		{"a &x\ny; &amp; b", "a &x\ny; & b"},
+
+		// A ';' beyond the entity-length window does not form an entity.
+		{"&" + strings.Repeat("x", 100) + "; &amp;", "&" + strings.Repeat("x", 100) + "; &"},
+
+		// HTML legacy no-semicolon rules must not decode entity prefixes
+		// inside spans that are not themselves entities.
+		{"?page=1&copy=2;mode=x", "?page=1&copy=2;mode=x"},
+		{"&copy=2;", "&copy=2;"},
+		{"&notit;", "&notit;"},
+		{"&foobar;", "&foobar;"},
+
+		// Real entities, including ones with legacy no-semicolon forms,
+		// still decode when the ';' belongs to them.
+		{"&copy; 2026", "© 2026"},
+		{"&not;x", "¬x"},
+		{"say &quot;hi&quot; &amp; bye", "say \"hi\" & bye"},
 	}
 
 	for _, test := range tests {
-		res, err := DecodeEntities(test.str)
-		assert.Nil(t, err, "cannot decode %q", test.str)
-		assert.Equal(t, res, test.res,
+		res := DecodeEntities(test.str)
+		assert.Equal(t, test.res, res,
 			"%q was decoded to %q instead of %q",
 			test.str, res, test.res)
 	}
@@ -51,6 +77,17 @@ func TestStripCDATA(t *testing.T) {
 		{"]]>", "]]>"},
 		{"<![CDATA[", "<![CDATA["},
 		{"<![CDATA[testtest", "<![CDATA[testtest"},
+
+		// Mixed text and CDATA: character data before or between CDATA
+		// sections is still character data and must be kept. These were
+		// silently dropped before (see #140).
+		{"before<![CDATA[mid]]>", "beforemid"},
+		{"A<![CDATA[B]]>C", "ABC"},
+		{"<![CDATA[A]]>MID<![CDATA[B]]>", "AMIDB"},
+		{"a<![CDATA[b]]>c<![CDATA[d]]>e", "abcde"},
+		{"&lt;p&gt;<![CDATA[<b>]]>", "<p><b>"},
+		{"x<![CDATA[]]>y", "xy"},
+		{"Breaking: <![CDATA[Big News]]>", "Breaking: Big News"},
 		{`<![CDATA[
     Since this is a CDATA section
     I can use all sorts of reserved characters

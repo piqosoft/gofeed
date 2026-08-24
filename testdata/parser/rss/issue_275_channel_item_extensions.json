@@ -1,0 +1,70 @@
+{
+  "dcExt": {
+    "creator": [
+      "Chan Creator"
+    ]
+  },
+  "extensions": {
+    "dc": {
+      "creator": [
+        {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
+          "name": "creator",
+          "value": "Chan Creator",
+          "attrs": {},
+          "children": {}
+        }
+      ]
+    }
+  },
+  "items": [
+    {
+      "dcExt": {
+        "subject": [
+          "Subj"
+        ]
+      },
+      "itunesExt": {
+        "author": "Item Author"
+      },
+      "extensions": {
+        "custom": {
+          "thing": [
+            {
+              "namespace_uri": "http://example.org/ns",
+              "name": "thing",
+              "value": "val",
+              "attrs": {
+                "attr": "v"
+              },
+              "children": {}
+            }
+          ]
+        },
+        "dc": {
+          "subject": [
+            {
+              "namespace_uri": "http://purl.org/dc/elements/1.1/",
+              "name": "subject",
+              "value": "Subj",
+              "attrs": {},
+              "children": {}
+            }
+          ]
+        },
+        "itunes": {
+          "author": [
+            {
+              "namespace_uri": "http://www.itunes.com/DTDs/PodCast-1.0.dtd",
+              "name": "author",
+              "value": "Item Author",
+              "attrs": {},
+              "children": {}
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.0"
+}

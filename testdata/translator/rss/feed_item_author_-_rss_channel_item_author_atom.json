@@ -1,0 +1,52 @@
+{
+    "title": "Feed Title",
+    "items": [
+        {
+            "title": "Item Title",
+            "author": {
+                "name": "John Doe",
+                "email": "john@example.com"
+            },
+            "authors": [
+                {
+                    "name": "John Doe",
+                    "email": "john@example.com"
+                }
+            ],
+            "extensions": {
+                "atom": {
+                    "author": [
+                        {
+                            "namespace_uri": "http://www.w3.org/2005/Atom",
+                            "name": "author",
+                            "value": "",
+                            "attrs": {},
+                            "children": {
+                                "email": [
+                                    {
+                                        "namespace_uri": "http://www.w3.org/2005/Atom",
+                                        "name": "email",
+                                        "value": "john@example.com",
+                                        "attrs": {},
+                                        "children": {}
+                                    }
+                                ],
+                                "name": [
+                                    {
+                                        "namespace_uri": "http://www.w3.org/2005/Atom",
+                                        "name": "name",
+                                        "value": "John Doe",
+                                        "attrs": {},
+                                        "children": {}
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "feedType": "rss",
+    "feedVersion": "2.0"
+}

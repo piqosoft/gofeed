@@ -1,0 +1,31 @@
+{
+  "title": "Feed",
+  "links": [
+    {
+      "href": "https://example.org/feed",
+      "rel": "self"
+    }
+  ],
+  "entries": [
+    {
+      "title": "Entry",
+      "source": {
+        "title": "Source"
+      }
+    }
+  ],
+  "extensions": {
+    "content": {
+      "title": [
+        {
+          "namespace_uri": "http://purl.org/rss/1.0/modules/content/",
+          "name": "title",
+          "value": "Foreign",
+          "attrs": {},
+          "children": {}
+        }
+      ]
+    }
+  },
+  "version": "1.0"
+}

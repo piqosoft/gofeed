@@ -3,18 +3,22 @@ package gofeed_test
 import (
 	"bytes"
 	"context"
+	stdjson "encoding/json"
+	"errors"
 	"fmt"
 	"io"
-	"os"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"strings"
 	"sync"
 	"testing"
+	"testing/iotest"
 	"time"
 
 	"github.com/piqosoft/gofeed"
+	"github.com/piqosoft/gofeed/rss"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -270,7 +274,7 @@ func ExampleParser_ParseString() {
 	fmt.Println(feed.Title)
 }
 
-func ExampleParser_ParseURL_withAuth() {
+func ExampleParser_ParseURL_basicAuth() {
 	fp := gofeed.NewParser()
 	fp.AuthConfig = &gofeed.Auth{
 		Username: "foo",
@@ -281,4 +285,184 @@ func ExampleParser_ParseURL_withAuth() {
 		panic(err)
 	}
 	fmt.Println(feed.Title)
+}
+
+const concurrencyFeed = `<rss version="2.0"><channel><title>t</title><item><title>i</title></item></channel></rss>`
+
+// TestParserConcurrentParseString shares one Parser across goroutines. Before
+// the lazy-init fix this races on the AtomTranslator/RSSTranslator/JSONTranslator
+// fields under -race.
+func TestParserConcurrentParseString(t *testing.T) {
+	p := gofeed.NewParser()
+	var wg sync.WaitGroup
+	for i := 0; i < 16; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			if _, err := p.ParseString(concurrencyFeed); err != nil {
+				t.Error(err)
+			}
+		}()
+	}
+	wg.Wait()
+}
+
+// TestParserConcurrentParseURL exercises the httpClient() lazy init the same way.
+func TestParserConcurrentParseURL(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, concurrencyFeed)
+	}))
+	defer srv.Close()
+
+	p := gofeed.NewParser()
+	var wg sync.WaitGroup
+	for i := 0; i < 16; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			if _, err := p.ParseURL(srv.URL); err != nil {
+				t.Error(err)
+			}
+		}()
+	}
+	wg.Wait()
+}
+
+func TestParseURLMaxByteSize(t *testing.T) {
+	big := `<rss version="2.0"><channel><title>` + strings.Repeat("x", 200000) + `</title></channel></rss>`
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, big)
+	}))
+	defer srv.Close()
+
+	p := gofeed.NewParser()
+
+	p.MaxByteSize = 1000
+	if _, err := p.ParseURL(srv.URL); !errors.Is(err, gofeed.ErrResponseTooLarge) {
+		t.Errorf("small limit: got %v, want ErrResponseTooLarge", err)
+	}
+
+	p.MaxByteSize = 10_000_000
+	if _, err := p.ParseURL(srv.URL); err != nil {
+		t.Errorf("large limit: unexpected error %v", err)
+	}
+
+	p.MaxByteSize = 0 // unlimited
+	if _, err := p.ParseURL(srv.URL); err != nil {
+		t.Errorf("unlimited: unexpected error %v", err)
+	}
+}
+
+// Confirms request-context cancellation works, which the default ParseURL
+// timeout relies on.
+func TestParseURLContextTimeout(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(2 * time.Second)
+	}))
+	defer srv.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
+
+	start := time.Now()
+	if _, err := gofeed.NewParser().ParseURLWithContext(srv.URL, ctx); err == nil {
+		t.Fatal("expected a timeout error")
+	}
+	if elapsed := time.Since(start); elapsed > time.Second {
+		t.Errorf("did not time out promptly: %v", elapsed)
+	}
+}
+
+func TestParserKeepOriginalFeed(t *testing.T) {
+	const feed = `<rss version="2.0"><channel><title>t</title><item><title>i</title></item></channel></rss>`
+
+	// Off by default: OriginalFeed() is nil.
+	p := gofeed.NewParser()
+	f, err := p.ParseString(feed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if f.OriginalFeed() != nil {
+		t.Errorf("OriginalFeed() = %T, want nil when KeepOriginalFeed is off", f.OriginalFeed())
+	}
+
+	// On: OriginalFeed() returns the source *rss.Feed.
+	p.KeepOriginalFeed = true
+	f, err = p.ParseString(feed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	orig, ok := f.OriginalFeed().(*rss.Feed)
+	if !ok {
+		t.Fatalf("OriginalFeed() = %T, want *rss.Feed", f.OriginalFeed())
+	}
+	if orig.Title != "t" {
+		t.Errorf("original feed title = %q, want %q", orig.Title, "t")
+	}
+}
+
+// An I/O error from the reader must surface as itself, not be masked as a
+// failed type detection (issue #311).
+func TestParser_Parse_ReaderError(t *testing.T) {
+	boom := errors.New("boom")
+	r := io.MultiReader(strings.NewReader(`<rss version="2.0"><channel>`), iotest.ErrReader(boom))
+
+	_, err := gofeed.NewParser().Parse(r)
+	assert.ErrorIs(t, err, boom)
+}
+
+// A feed much larger than the detection window must parse completely: the
+// format parser reads from the start of the stream, not from after the peek.
+func TestParser_Parse_LargeFeed(t *testing.T) {
+	var sb strings.Builder
+	sb.WriteString(`<rss version="2.0"><channel><title>big</title>`)
+	for i := 0; i < 2000; i++ {
+		fmt.Fprintf(&sb, `<item><title>item %d</title><guid>g%d</guid></item>`, i, i)
+	}
+	sb.WriteString(`</channel></rss>`)
+
+	feed, err := gofeed.NewParser().Parse(strings.NewReader(sb.String()))
+	assert.NoError(t, err)
+	assert.Len(t, feed.Items, 2000)
+	assert.Equal(t, "item 1999", feed.Items[1999].Title)
+}
+
+// JSON feeds larger than the detection window must be classified from their
+// prefix and then validated and decoded from the complete stream (issue #344).
+func TestParser_Parse_LargeJSONFeed(t *testing.T) {
+	content := strings.Repeat("x", 8192)
+	body := fmt.Sprintf(
+		`{"version":"https://jsonfeed.org/version/1.1","title":"big","items":[{"id":"1","content_text":%q}]}`,
+		content,
+	)
+
+	feed, err := gofeed.NewParser().Parse(strings.NewReader(body))
+	assert.NoError(t, err)
+	if assert.NotNil(t, feed) && assert.Len(t, feed.Items, 1) {
+		assert.Equal(t, "json", feed.FeedType)
+		assert.Equal(t, "big", feed.Title)
+		assert.Equal(t, content, feed.Items[0].Content)
+	}
+}
+
+// Once a large JSON document is detected, syntax errors beyond the detection
+// window must come from the JSON parser rather than being masked as a type
+// detection failure.
+func TestParser_Parse_LargeMalformedJSON(t *testing.T) {
+	body := `{"version":"https://jsonfeed.org/version/1.1","items":[{"id":"1","content_text":"` +
+		strings.Repeat("x", 8192) + `"}`
+
+	feed, err := gofeed.NewParser().Parse(strings.NewReader(body))
+	assert.Nil(t, feed)
+	var syntaxError *stdjson.SyntaxError
+	assert.ErrorAs(t, err, &syntaxError)
+	assert.NotErrorIs(t, err, gofeed.ErrFeedTypeNotDetected)
+}
+
+// Detection only inspects the first few KB; a root element pushed beyond
+// that window by leading junk is reported as undetected, not misparsed.
+func TestParser_Parse_RootBeyondDetectionWindow(t *testing.T) {
+	pad := "<!-- " + strings.Repeat("x", 8192) + " -->"
+	_, err := gofeed.NewParser().Parse(strings.NewReader(pad + `<rss version="2.0"><channel></channel></rss>`))
+	assert.ErrorIs(t, err, gofeed.ErrFeedTypeNotDetected)
 }

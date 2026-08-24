@@ -1,6 +1,4 @@
 {
-  "feedType": "rss",
-  "feedVersion": "0.91",
   "image": {
     "url": "http://example.com/channel.png"
   },
@@ -8,15 +6,19 @@
     "media": {
       "content": [
         {
+          "namespace_uri": "media",
           "name": "content",
+          "value": "",
           "attrs": {
-            "url": "http://example.com/channel.png",
-            "medium": "image"
+            "medium": "image",
+            "url": "http://example.com/channel.png"
           },
           "children": {}
         }
       ]
     }
   },
-  "items": []
+  "items": [],
+  "feedType": "rss",
+  "feedVersion": "0.91"
 }

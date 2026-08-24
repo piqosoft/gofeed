@@ -3,13 +3,13 @@
         {
             "title": "rss item image from media content",
             "image": {
-                "url": "https://example.com/blog-open.png",
-                "title": ""
+                "url": "https://example.com/blog-open.png"
             },
             "extensions": {
                 "media": {
                     "content": [
                         {
+                            "namespace_uri": "media",
                             "name": "content",
                             "value": "",
                             "attrs": {
@@ -19,6 +19,7 @@
                             "children": {
                                 "title": [
                                     {
+                                        "namespace_uri": "media",
                                         "name": "title",
                                         "value": "blog-open",
                                         "attrs": {

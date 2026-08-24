@@ -1,0 +1,45 @@
+{
+  "extensions": {
+    "atom": {
+      "link": [
+        {
+          "namespace_uri": "http://www.w3.org/2005/Atom",
+          "name": "link",
+          "value": "",
+          "attrs": {
+            "href": "https://hub.example.org/atom-prefix",
+            "rel": "hub"
+          },
+          "children": {}
+        },
+        {
+          "namespace_uri": "http://www.w3.org/2005/Atom",
+          "name": "link",
+          "value": "",
+          "attrs": {
+            "href": "https://hub.example.org/default-namespace",
+            "rel": "hub",
+            "xmlns": "http://www.w3.org/2005/Atom"
+          },
+          "children": {}
+        }
+      ]
+    },
+    "atom03": {
+      "link": [
+        {
+          "namespace_uri": "http://purl.org/atom/ns#",
+          "name": "link",
+          "value": "",
+          "attrs": {
+            "href": "https://hub.example.org/atom03-prefix",
+            "rel": "hub"
+          },
+          "children": {}
+        }
+      ]
+    }
+  },
+  "items": [],
+  "version": "2.0"
+}

@@ -1,0 +1,26 @@
+{
+    "title": "Feed Title",
+    "items": [
+        {
+            "title": "Item Title",
+            "content": "<p>Body</p>",
+            "extensions": {
+                "atom": {
+                    "content": [
+                        {
+                            "namespace_uri": "http://www.w3.org/2005/Atom",
+                            "name": "content",
+                            "value": "<p>Body</p>",
+                            "attrs": {
+                                "type": "html"
+                            },
+                            "children": {}
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "feedType": "rss",
+    "feedVersion": "2.0"
+}

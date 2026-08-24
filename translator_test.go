@@ -224,3 +224,46 @@ func TestDefaultJSONTranslator_Translate_WrongType(t *testing.T) {
 	assert.Nil(t, af)
 	assert.NotNil(t, err)
 }
+
+// A JSON Feed attachment's size_in_bytes maps to the universal Enclosure.Length
+// (bytes), not its duration.
+func TestJSONAttachmentEnclosureLength(t *testing.T) {
+	in := `{"version":"https://jsonfeed.org/version/1","title":"t","items":[{"id":"a","attachments":[{"url":"u","mime_type":"audio/mpeg","size_in_bytes":5000000,"duration_in_seconds":3600}]}]}`
+	feed, err := gofeed.NewParser().ParseString(in)
+	if err != nil {
+		t.Fatal(err)
+	}
+	enc := feed.Items[0].Enclosures[0]
+	if enc.Length != "5000000" {
+		t.Fatalf("enclosure length = %q, want \"5000000\" (bytes, not duration)", enc.Length)
+	}
+}
+
+// DisableContentImageScan turns off the HTML-parsing fallback that finds a
+// first <img> in feed and item content; explicit images are unaffected.
+func TestDisableContentImageScan(t *testing.T) {
+	feed := `<rss version="2.0"><channel>
+		<description><![CDATA[<p><img src="http://example.org/feed.png"/></p>]]></description>
+		<item><description><![CDATA[<img src="http://example.org/item.png">]]></description></item>
+	</channel></rss>`
+
+	fp := &rss.Parser{}
+	rssFeed, err := fp.Parse(strings.NewReader(feed))
+	assert.NoError(t, err)
+
+	def := &gofeed.DefaultRSSTranslator{}
+	out, err := def.Translate(rssFeed)
+	assert.NoError(t, err)
+	if assert.NotNil(t, out.Image) {
+		assert.Equal(t, "http://example.org/feed.png", out.Image.URL)
+	}
+	if assert.NotNil(t, out.Items[0].Image) {
+		assert.Equal(t, "http://example.org/item.png", out.Items[0].Image.URL)
+	}
+
+	off := &gofeed.DefaultRSSTranslator{DisableContentImageScan: true}
+	out, err = off.Translate(rssFeed)
+	assert.NoError(t, err)
+	assert.Nil(t, out.Image)
+	assert.Nil(t, out.Items[0].Image)
+}
