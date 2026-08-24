@@ -37,3 +37,7 @@ cmd/ftest/ftest
 # Test coverage output
 coverage.out
 coverage.txt
+
+# Local assistant settings and Podcast Namespace reference clone
+**/.claude/settings.local.json
+/podcast-namespace/
