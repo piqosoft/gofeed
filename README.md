@@ -1,10 +1,10 @@
 # gofeed
 
-[![CI](https://github.com/mmcdole/gofeed/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/mmcdole/gofeed/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/mmcdole/gofeed/branch/master/graph/badge.svg)](https://codecov.io/gh/mmcdole/gofeed) [![Go Reference](https://pkg.go.dev/badge/github.com/mmcdole/gofeed.svg)](https://pkg.go.dev/github.com/mmcdole/gofeed) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+[![CI](https://github.com/piqosoft/gofeed/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/piqosoft/gofeed/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/piqosoft/gofeed/branch/master/graph/badge.svg)](https://codecov.io/gh/piqosoft/gofeed) [![Go Reference](https://pkg.go.dev/badge/github.com/piqosoft/gofeed.svg)](https://pkg.go.dev/github.com/piqosoft/gofeed) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
 # Gofeed: A Robust Feed Parser for Golang
 
-<img src="https://github.com/mmcdole/gofeed/assets/3767096/ab4e7b0e-1472-4249-880c-c6784000ed31" width="150" height="150"> 
+<img src="https://github.com/mmcdole/gofeed/assets/3767096/ab4e7b0e-1472-4249-880c-c6784000ed31" width="150" height="150">
 <br /><br />
 
 `gofeed` is a powerful and flexible library designed for parsing **RSS**, **Atom**, and **JSON** feeds across various formats and versions. It effectively manages non-standard elements and known extensions, and demonstrates resilience against common feed issues.

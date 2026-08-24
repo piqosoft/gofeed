@@ -40,6 +40,7 @@
                 "dc": {
                     "creator": [
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "creator",
                             "value": "John Smith",
                             "attrs": {},
@@ -48,6 +49,7 @@
                     ],
                     "date": [
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "date",
                             "value": "2007-02-03T10:20:30Z",
                             "attrs": {},
@@ -56,6 +58,7 @@
                     ],
                     "description": [
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "description",
                             "value": "An item description",
                             "attrs": {},
@@ -64,6 +67,7 @@
                     ],
                     "identifier": [
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "identifier",
                             "value": "urn:uuid:1234",
                             "attrs": {},
@@ -72,6 +76,7 @@
                     ],
                     "subject": [
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "subject",
                             "value": "Programming",
                             "attrs": {},

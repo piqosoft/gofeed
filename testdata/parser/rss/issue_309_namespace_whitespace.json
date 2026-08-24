@@ -6,6 +6,7 @@
     "custom": {
       "tag": [
         {
+          "namespace_uri": "http://example.org/ns",
           "name": "tag",
           "value": "value",
           "attrs": {},
@@ -16,6 +17,7 @@
     "itunes": {
       "author": [
         {
+          "namespace_uri": "http://www.itunes.com/DTDs/PodCast-1.0.dtd",
           "name": "author",
           "value": "Example Author",
           "attrs": {},

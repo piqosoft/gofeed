@@ -37,6 +37,7 @@
     "dc": {
       "creator": [
         {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
           "name": "creator",
           "value": "Jane Creator",
           "attrs": {},
@@ -45,6 +46,7 @@
       ],
       "date": [
         {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
           "name": "date",
           "value": "2026-01-02T15:04:05Z",
           "attrs": {},
@@ -53,6 +55,7 @@
       ],
       "language": [
         {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
           "name": "language",
           "value": "en-us",
           "attrs": {},
@@ -61,6 +64,7 @@
       ],
       "rights": [
         {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
           "name": "rights",
           "value": "DC Rights",
           "attrs": {},
@@ -69,6 +73,7 @@
       ],
       "title": [
         {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
           "name": "title",
           "value": "DC Title",
           "attrs": {},
@@ -79,6 +84,7 @@
     "itunes": {
       "summary": [
         {
+          "namespace_uri": "http://www.itunes.com/DTDs/PodCast-1.0.dtd",
           "name": "summary",
           "value": "Itunes Summary",
           "attrs": {},

@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/mmcdole/gofeed/internal/shared"
+	"github.com/piqosoft/gofeed/internal/shared"
 )
 
 // FeedType represents one of the possible feed

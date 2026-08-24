@@ -9,6 +9,7 @@
                 "atom": {
                     "updated": [
                         {
+                            "namespace_uri": "http://www.w3.org/2005/Atom",
                             "name": "updated",
                             "value": "2020-01-02T15:04:05Z",
                             "attrs": {},

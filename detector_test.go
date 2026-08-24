@@ -10,7 +10,7 @@ import (
 	"testing"
 	"testing/iotest"
 
-	"github.com/mmcdole/gofeed"
+	"github.com/piqosoft/gofeed"
 	"github.com/stretchr/testify/assert"
 )
 

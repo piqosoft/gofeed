@@ -12,6 +12,7 @@
     "atom": {
       "link": [
         {
+          "namespace_uri": "http://www.w3.org/2005/Atom",
           "name": "link",
           "value": "",
           "attrs": {

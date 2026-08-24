@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mmcdole/gofeed/atom"
-	"github.com/mmcdole/gofeed/json"
-	"github.com/mmcdole/gofeed/rss"
+	"github.com/piqosoft/gofeed/atom"
+	"github.com/piqosoft/gofeed/json"
+	"github.com/piqosoft/gofeed/rss"
 )
 
 // defaultRequestTimeout bounds ParseURL, which would otherwise use a client

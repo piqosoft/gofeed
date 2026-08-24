@@ -17,12 +17,14 @@
                 "atom": {
                     "author": [
                         {
+                            "namespace_uri": "http://www.w3.org/2005/Atom",
                             "name": "author",
                             "value": "",
                             "attrs": {},
                             "children": {
                                 "email": [
                                     {
+                                        "namespace_uri": "http://www.w3.org/2005/Atom",
                                         "name": "email",
                                         "value": "john@example.com",
                                         "attrs": {},
@@ -31,6 +33,7 @@
                                 ],
                                 "name": [
                                     {
+                                        "namespace_uri": "http://www.w3.org/2005/Atom",
                                         "name": "name",
                                         "value": "John Doe",
                                         "attrs": {},

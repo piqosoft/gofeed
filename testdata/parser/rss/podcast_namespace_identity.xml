@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:p20="https://podcastindex.org/namespace/1.0"
+  xmlns:itunes="http://www.itunes.com/DTDs/PodCast-1.0.dtd"
+  xmlns:podcast="urn:not-podcast">
+  <channel>
+    <title>Podcast Namespace identity</title>
+    <p20:liveItem status="pending">
+      <itunes:season>2</itunes:season>
+      <p20:season>3</p20:season>
+      <title>Unnamespaced child</title>
+    </p20:liveItem>
+    <podcast:intruder>not official</podcast:intruder>
+  </channel>
+</rss>

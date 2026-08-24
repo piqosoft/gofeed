@@ -29,12 +29,14 @@
                 "dc": {
                     "creator": [
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "creator",
                             "value": "Alice",
                             "attrs": {},
                             "children": {}
                         },
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "creator",
                             "value": "Bob",
                             "attrs": {},
@@ -43,12 +45,14 @@
                     ],
                     "subject": [
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "subject",
                             "value": "One",
                             "attrs": {},
                             "children": {}
                         },
                         {
+                            "namespace_uri": "http://purl.org/dc/elements/1.1/",
                             "name": "subject",
                             "value": "Two",
                             "attrs": {},

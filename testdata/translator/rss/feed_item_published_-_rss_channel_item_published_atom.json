@@ -9,6 +9,7 @@
                 "atom": {
                     "published": [
                         {
+                            "namespace_uri": "http://www.w3.org/2005/Atom",
                             "name": "published",
                             "value": "2019-01-02T15:04:05Z",
                             "attrs": {},

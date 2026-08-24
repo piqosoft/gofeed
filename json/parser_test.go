@@ -12,7 +12,7 @@ import (
 	"testing"
 	"testing/iotest"
 
-	jsonParser "github.com/mmcdole/gofeed/json"
+	jsonParser "github.com/piqosoft/gofeed/json"
 	"github.com/stretchr/testify/assert"
 )
 

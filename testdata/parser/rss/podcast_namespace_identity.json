@@ -1,0 +1,57 @@
+{
+    "title": "Podcast Namespace identity",
+    "extensions": {
+        "podcast": {
+            "liveItem": [
+                {
+                    "namespace_uri": "https://podcastindex.org/namespace/1.0",
+                    "name": "liveItem",
+                    "value": "",
+                    "attrs": {
+                        "status": "pending"
+                    },
+                    "children": {
+                        "season": [
+                            {
+                                "namespace_uri": "http://www.itunes.com/DTDs/PodCast-1.0.dtd",
+                                "name": "season",
+                                "value": "2",
+                                "attrs": {},
+                                "children": {}
+                            },
+                            {
+                                "namespace_uri": "https://podcastindex.org/namespace/1.0",
+                                "name": "season",
+                                "value": "3",
+                                "attrs": {},
+                                "children": {}
+                            }
+                        ],
+                        "title": [
+                            {
+                                "namespace_uri": "",
+                                "name": "title",
+                                "value": "Unnamespaced child",
+                                "attrs": {},
+                                "children": {}
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "urn:not-podcast": {
+            "intruder": [
+                {
+                    "namespace_uri": "urn:not-podcast",
+                    "name": "intruder",
+                    "value": "not official",
+                    "attrs": {},
+                    "children": {}
+                }
+            ]
+        }
+    },
+    "items": [],
+    "version": "2.0"
+}

@@ -3,13 +3,14 @@
     "items": [
         {
             "title": "Item Title",
-            "content": "\u003cp\u003eBody\u003c/p\u003e",
+            "content": "<p>Body</p>",
             "extensions": {
                 "atom": {
                     "content": [
                         {
+                            "namespace_uri": "http://www.w3.org/2005/Atom",
                             "name": "content",
-                            "value": "\u003cp\u003eBody\u003c/p\u003e",
+                            "value": "<p>Body</p>",
                             "attrs": {
                                 "type": "html"
                             },

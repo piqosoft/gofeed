@@ -17,8 +17,8 @@ import (
 	"testing/iotest"
 	"time"
 
-	"github.com/mmcdole/gofeed"
-	"github.com/mmcdole/gofeed/rss"
+	"github.com/piqosoft/gofeed"
+	"github.com/piqosoft/gofeed/rss"
 	"github.com/stretchr/testify/assert"
 )
 

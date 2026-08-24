@@ -3,8 +3,8 @@ package shared
 import (
 	"strings"
 
-	"github.com/mmcdole/gofeed/extensions"
 	xpp "github.com/mmcdole/goxpp/v2"
+	"github.com/piqosoft/gofeed/extensions"
 )
 
 const (
@@ -14,6 +14,11 @@ const (
 	RSS10Namespace    = "http://purl.org/rss/1.0/"
 	RSS09Namespace    = "http://channel.netscape.com/rdf/simple/0.9/"
 	RSS09AltNamespace = "http://my.netscape.com/rdf/simple/0.9/"
+	PodcastNamespace  = "https://podcastindex.org/namespace/1.0"
+	// PodcastLegacyNamespace is the original namespace identifier that the
+	// Podcast Namespace specification requires clients to continue accepting.
+	PodcastLegacyNamespace = "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md"
+	podcastPrefix          = "podcast"
 )
 
 // InNamespace reports whether the current element's resolved namespace is
@@ -66,6 +71,7 @@ func ParseExtension(fe ext.Extensions, p *xpp.Parser) (ext.Extensions, error) {
 }
 
 func parseExtensionElement(p *xpp.Parser) (e ext.Extension, err error) {
+	e.NamespaceURI = strings.TrimSpace(p.Space())
 	if err = p.Expect(xpp.StartTag, "*"); err != nil {
 		return e, err
 	}
@@ -80,30 +86,8 @@ func parseExtensionElement(p *xpp.Parser) (e ext.Extension, err error) {
 		e.Attrs[attr.Name.Local] = attr.Value
 	}
 
-	for {
-		tok, err := p.Next()
-		if err != nil {
-			return e, err
-		}
-
-		if tok == xpp.EndTag {
-			break
-		}
-
-		if tok == xpp.StartTag {
-			child, err := parseExtensionElement(p)
-			if err != nil {
-				return e, err
-			}
-
-			if _, ok := e.Children[child.Name]; !ok {
-				e.Children[child.Name] = []ext.Extension{}
-			}
-
-			e.Children[child.Name] = append(e.Children[child.Name], child)
-		} else if tok == xpp.Text {
-			e.Value += p.Text()
-		}
+	if err = parseExtensionContent(p, &e); err != nil {
+		return e, err
 	}
 
 	e.Value = strings.TrimSpace(e.Value)
@@ -113,6 +97,28 @@ func parseExtensionElement(p *xpp.Parser) (e ext.Extension, err error) {
 	}
 
 	return e, nil
+}
+
+func parseExtensionContent(p *xpp.Parser, e *ext.Extension) error {
+	for {
+		tok, err := p.Next()
+		if err != nil {
+			return err
+		}
+
+		switch tok {
+		case xpp.EndTag:
+			return nil
+		case xpp.StartTag:
+			child, err := parseExtensionElement(p)
+			if err != nil {
+				return err
+			}
+			e.Children[child.Name] = append(e.Children[child.Name], child)
+		case xpp.Text:
+			e.Value += p.Text()
+		}
+	}
 }
 
 func PrefixForNamespace(space string, p *xpp.Parser) string {
@@ -130,6 +136,11 @@ func PrefixForNamespace(space string, p *xpp.Parser) string {
 	// Next we check if the feed itself declared a prefix for this
 	// namespace and return it if we have a result.
 	if prefix, ok := p.PrefixForURI(space); ok && prefix != "" {
+		// A publisher-selected prefix cannot impersonate the canonical Podcast
+		// Namespace key. Recognized Podcast Namespace URIs returned above.
+		if prefix == podcastPrefix {
+			return space
+		}
 		return prefix
 	}
 
@@ -201,4 +212,6 @@ var canonicalNamespaces = map[string]string{
 	"http://www.w3.org/1999/xlink":                                   "xlink",
 	"http://www.w3.org/XML/1998/namespace":                           "xml",
 	"http://podlove.org/simple-chapters":                             "psc",
+	PodcastNamespace:                                                 podcastPrefix,
+	PodcastLegacyNamespace:                                           podcastPrefix,
 }

@@ -8,6 +8,7 @@
     "dc": {
       "creator": [
         {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
           "name": "creator",
           "value": "Chan Creator",
           "attrs": {},
@@ -30,6 +31,7 @@
         "custom": {
           "thing": [
             {
+              "namespace_uri": "http://example.org/ns",
               "name": "thing",
               "value": "val",
               "attrs": {
@@ -42,6 +44,7 @@
         "dc": {
           "subject": [
             {
+              "namespace_uri": "http://purl.org/dc/elements/1.1/",
               "name": "subject",
               "value": "Subj",
               "attrs": {},
@@ -52,6 +55,7 @@
         "itunes": {
           "author": [
             {
+              "namespace_uri": "http://www.itunes.com/DTDs/PodCast-1.0.dtd",
               "name": "author",
               "value": "Item Author",
               "attrs": {},

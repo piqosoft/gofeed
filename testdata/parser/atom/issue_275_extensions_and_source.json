@@ -22,6 +22,7 @@
           "dc": {
             "rights": [
               {
+                "namespace_uri": "http://purl.org/dc/elements/1.1/",
                 "name": "rights",
                 "value": "r",
                 "attrs": {},
@@ -35,6 +36,7 @@
         "dc": {
           "subject": [
             {
+              "namespace_uri": "http://purl.org/dc/elements/1.1/",
               "name": "subject",
               "value": "s",
               "attrs": {},
@@ -67,7 +69,7 @@
       ],
       "content": {
         "type": "application/atom+xml",
-        "value": "\u0026lt;x/\u0026gt;"
+        "value": "&lt;x/&gt;"
       }
     }
   ],
@@ -75,6 +77,7 @@
     "dc": {
       "creator": [
         {
+          "namespace_uri": "http://purl.org/dc/elements/1.1/",
           "name": "creator",
           "value": "Feed Creator",
           "attrs": {},

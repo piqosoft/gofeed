@@ -39,6 +39,7 @@
         "dc": {
             "creator": [
                 {
+                    "namespace_uri": "http://purl.org/dc/elements/1.1/",
                     "name": "creator",
                     "value": "Jane Doe",
                     "attrs": {},
@@ -47,6 +48,7 @@
             ],
             "date": [
                 {
+                    "namespace_uri": "http://purl.org/dc/elements/1.1/",
                     "name": "date",
                     "value": "2006-01-02T15:04:05Z",
                     "attrs": {},
@@ -55,6 +57,7 @@
             ],
             "language": [
                 {
+                    "namespace_uri": "http://purl.org/dc/elements/1.1/",
                     "name": "language",
                     "value": "en-us",
                     "attrs": {},
@@ -63,6 +66,7 @@
             ],
             "publisher": [
                 {
+                    "namespace_uri": "http://purl.org/dc/elements/1.1/",
                     "name": "publisher",
                     "value": "Example Publisher",
                     "attrs": {},
@@ -71,6 +75,7 @@
             ],
             "rights": [
                 {
+                    "namespace_uri": "http://purl.org/dc/elements/1.1/",
                     "name": "rights",
                     "value": "Copyright 2006 Example",
                     "attrs": {},
@@ -79,6 +84,7 @@
             ],
             "subject": [
                 {
+                    "namespace_uri": "http://purl.org/dc/elements/1.1/",
                     "name": "subject",
                     "value": "Technology",
                     "attrs": {},

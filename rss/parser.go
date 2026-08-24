@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	ext "github.com/mmcdole/gofeed/extensions"
-	"github.com/mmcdole/gofeed/internal/shared"
+	ext "github.com/piqosoft/gofeed/extensions"
+	"github.com/piqosoft/gofeed/internal/shared"
 	xpp "github.com/mmcdole/goxpp/v2"
 )
 
